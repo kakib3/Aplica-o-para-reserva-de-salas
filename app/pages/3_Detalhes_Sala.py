@@ -3,7 +3,7 @@ import streamlit as st
 from app.services.salas import buscar_sala_por_id, listar_salas
 from app.services.reservas import listar_reservas_por_sala
 from app.utils.session import exigir_usuario_selecionado
-
+from app.components.cards import CORES_STATUS_SALA
 st.set_page_config(
     page_title="Detalhes da Sala - UNISAPIENS",
     page_icon="🔍",
@@ -74,15 +74,7 @@ with col1:
         )
 
 with col2:
-    cor = {
-        "Disponivel": "🟢",
-        "Manutencao": "🟠",
-        "Indisponivel": "🔴"
-    }.get(
-        sala["status"],
-        "⚪"
-    )
-
+    cor = CORES_STATUS_SALA.get(sala["status"], "⚪")
     st.metric(
         "Status atual",
         f"{cor} {sala['status']}"
