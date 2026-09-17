@@ -33,7 +33,8 @@ def render_card_sala(sala, on_ver_detalhes=None):
 
         with col_status:
             cor = CORES_STATUS_SALA.get(sala["status"], "⚪")
-            st.metric("Status", f"{cor} {sala['status']}")
+            st.write("**Status**")
+            st.write(f"{cor} {sala['status']}")
 
         with col_acao:
             if st.button("Ver detalhes", key=f"ver_{sala['idSala']}"):
@@ -58,7 +59,8 @@ def render_card_reserva(reserva, nome_sala, id_usuario):
 
         with col_status:
             cor = "🟢" if reserva["status"] == STATUS_RESERVA_CONFIRMADA else "🔴"
-            st.metric("Status", f"{cor} {reserva['status']}")
+            st.write("**Status**")
+            st.write(f"{cor} {reserva['status']}")
 
         with col_acao:
             st.button(
