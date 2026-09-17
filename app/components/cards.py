@@ -37,7 +37,11 @@ def render_card_sala(sala, on_ver_detalhes=None):
             st.write(f"{cor} {sala['status']}")
 
         with col_acao:
-            if st.button("Ver detalhes", key=f"ver_{sala['idSala']}"):
+            if st.button(
+                "Ver detalhes",
+                key=f"ver_{sala['idSala']}",
+                help="Veja equipamentos, horários e reservas desta sala"
+            ):
                 if on_ver_detalhes:
                     on_ver_detalhes(sala["idSala"])
 
