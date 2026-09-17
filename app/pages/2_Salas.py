@@ -2,7 +2,7 @@ import streamlit as st
 
 from app.services.salas import listar_salas
 from app.utils.session import exigir_usuario_selecionado
-
+from app.components.cards import render_card_sala
 st.set_page_config(
     page_title="Salas - UNISAPIENS",
     page_icon="🏢",
@@ -70,59 +70,8 @@ else:
     )
 
     for _, sala in df.iterrows():
-        with st.container(border=True):
+        def ao_ver_detalhes(id_sala):
+            st.session_state["sala_selecionada_id"] = id_sala
+            st.switch_page("app/pages/3_Detalhes_Sala.py")
 
-            col_info, col_status, col_acao = st.columns(
-                [3, 1, 1]
-            )
-
-            with col_info:
-                st.markdown(
-                    f"### {sala['nome']}"
-                )
-
-                st.write(
-                    f"📍 {sala['predio']} - "
-                    f"{sala['andar']}º andar"
-                )
-
-                st.write(
-                    f"👥 Capacidade: "
-                    f"{sala['capacidade']} pessoas"
-                )
-
-                if sala.get("descricao"):
-                    st.caption(
-                        sala["descricao"]
-                    )
-
-            with col_status:
-                cor = {
-                    "Disponivel": "🟢",
-                    "Manutencao": "🟠",
-                    "Indisponivel": "🔴",
-                }.get(
-                    sala["status"],
-                    "⚪"
-                )
-
-                st.metric(
-                    "Status",
-                    f"{cor} {sala['status']}"
-                )
-
-            with col_acao:
-                st.write("")
-                st.write("")
-
-                if st.button(
-                    "Ver detalhes",
-                    key=f"ver_{sala['idSala']}"
-                ):
-                    st.session_state[
-                        "sala_selecionada_id"
-                    ] = sala["idSala"]
-
-                    st.switch_page(
-                        "app/pages/3_Detalhes_Sala.py"
-                    )
+        render_card_sala(sala, on_ver_detalhes=ao_ver_detalhes)
