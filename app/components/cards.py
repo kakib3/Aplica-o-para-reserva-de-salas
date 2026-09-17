@@ -1,8 +1,11 @@
 """
-Componentes de UI reutilizaveis relacionados a salas.
+Componentes de UI reutilizaveis relacionados a salas e reservas.
 Sem logica de negocio - apenas renderizacao (Streamlit widgets).
 """
 import streamlit as st
+
+from app.services.reservas import cancelar_reserva
+from app.services.validacao import RegraNegocioError, STATUS_RESERVA_CONFIRMADA
 
 CORES_STATUS_SALA = {
     "Disponivel": "🟢",
@@ -38,10 +41,6 @@ def render_card_sala(sala, on_ver_detalhes=None):
                     on_ver_detalhes(sala["idSala"])
 
 
-from app.services.reservas import cancelar_reserva
-from app.services.validacao import RegraNegocioError, STATUS_RESERVA_CONFIRMADA
-
-
 def render_card_reserva(reserva, nome_sala, id_usuario):
     """
     Renderiza um card com as informacoes de uma reserva, com botao de cancelar.
@@ -62,6 +61,12 @@ def render_card_reserva(reserva, nome_sala, id_usuario):
             st.metric("Status", f"{cor} {reserva['status']}")
 
         with col_acao:
+            st.button(
+                "Alterar",
+                disabled=True,
+                key=f"alterar_{reserva['idReserva']}",
+                help="Indisponível: aguardando implementação de alterar_reserva() no back-end"
+            )
             if reserva["status"] == STATUS_RESERVA_CONFIRMADA:
                 if st.button("Cancelar", key=f"cancelar_{reserva['idReserva']}"):
                     try:
@@ -75,4 +80,4 @@ def render_card_reserva(reserva, nome_sala, id_usuario):
                     "Cancelar",
                     disabled=True,
                     key=f"cancelar_disabled_{reserva['idReserva']}"
-                )                    
+                )
